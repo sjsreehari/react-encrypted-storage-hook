@@ -1,0 +1,5 @@
+.env
+node modules
+dist    
+.git
+node_modules
