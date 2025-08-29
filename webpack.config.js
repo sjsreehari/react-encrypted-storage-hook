@@ -6,8 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default {
-  mode: "development",
-  entry: path.resolve(__dirname, "test-app.jsx"),
+  mode: "production",
+  entry: path.resolve(__dirname, "encryptedStorage.jsx"),
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
