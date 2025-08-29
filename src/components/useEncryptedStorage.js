@@ -27,6 +27,7 @@ function getStorage(storage) {
   return localStorage;
 }
 
+
 export function useEncryptedStorage(key, initialValue, options) {
   const globalSecret = useContext(GlobalSecretContext);
   const { secret = globalSecret, storage = "local", ttl, fallback = "xor", onFallback, onError, onReencrypt } = options || {};
@@ -40,11 +41,25 @@ export function useEncryptedStorage(key, initialValue, options) {
     try { return JSON.parse(val); } catch { return undefined; }
   }
 
+  // Helper: check serializable
+  function isSerializable(val) {
+    try {
+      JSON.stringify(val);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   // Load stored value on mount (async)
   useEffect(() => {
     isMounted.current = true;
     (async () => {
       if (!storageObj) return;
+      if (!secret) {
+        if (onError) onError(new Error("Secret is required for encryption"));
+        return;
+      }
       try {
         const raw = storageObj.getItem(key);
         if (!raw) return;
@@ -73,7 +88,13 @@ export function useEncryptedStorage(key, initialValue, options) {
             throw e;
           }
         }
-        if (isMounted.current) setValue(safeParse(decrypted));
+        const parsedDecrypted = safeParse(decrypted);
+        if (parsedDecrypted === undefined) {
+          if (onError) onError(new Error("Decryption failed or data corrupted"));
+          if (isMounted.current) setValue(initialValue);
+        } else {
+          if (isMounted.current) setValue(parsedDecrypted);
+        }
       } catch (err) {
         if (isMounted.current) setValue(initialValue);
         if (onError) onError(err);
@@ -102,7 +123,13 @@ export function useEncryptedStorage(key, initialValue, options) {
               if (onFallback) onFallback();
               decrypted = decryptXOR(secret, parsed.data);
             }
-            if (isMounted.current) setValue(safeParse(decrypted));
+            const parsedDecrypted = safeParse(decrypted);
+            if (parsedDecrypted === undefined) {
+              if (onError) onError(new Error("Decryption failed or data corrupted"));
+              if (isMounted.current) setValue(initialValue);
+            } else {
+              if (isMounted.current) setValue(parsedDecrypted);
+            }
           } catch (err) {
             if (isMounted.current) setValue(initialValue);
             if (onError) onError(err);
@@ -117,6 +144,14 @@ export function useEncryptedStorage(key, initialValue, options) {
   // Save value (async, handles crypto, TTL, serialization, quota, lock)
   const save = useCallback(
     async (val) => {
+      if (!secret) {
+        if (onError) onError(new Error("Secret is required for encryption"));
+        return;
+      }
+      if (!isSerializable(val)) {
+        if (onError) onError(new Error("Value must be JSON-serializable"));
+        return;
+      }
       if (lock.current) return; // prevent race
       lock.current = true;
       setValue(val);
@@ -146,8 +181,7 @@ export function useEncryptedStorage(key, initialValue, options) {
       };
       try {
         storageObj.setItem(key, JSON.stringify(payload));
-        // Manual event for same-tab listeners
-        window.dispatchEvent(new StorageEvent("storage", { key, newValue: JSON.stringify(payload) }));
+        // Do NOT dispatch manual StorageEvent (not standard, doesn't sync tabs)
       } catch (err) {
         if (onError) onError(err);
         // Storage quota exceeded or unavailable
@@ -162,13 +196,20 @@ export function useEncryptedStorage(key, initialValue, options) {
     if (!storageObj) return;
     storageObj.removeItem(key);
     setValue(initialValue);
-    // Manual event for same-tab listeners
-    window.dispatchEvent(new StorageEvent("storage", { key, newValue: null }));
+    // Do NOT dispatch manual StorageEvent
   }, [key, initialValue]);
 
   // Manual re-encrypt/rotate
   const reencrypt = useCallback(async (newSecret) => {
     if (!storageObj) return;
+    if (!secret) {
+      if (onError) onError(new Error("Secret is required for re-encryption"));
+      return;
+    }
+    if (!newSecret || typeof newSecret !== "string" || newSecret.length < 8) {
+      if (onError) onError(new Error("New secret must be a string of at least 8 characters"));
+      return;
+    }
     const raw = storageObj.getItem(key);
     if (!raw) return;
     const parsed = safeParse(raw);
