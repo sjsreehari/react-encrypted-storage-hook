@@ -1,5 +1,5 @@
 {
-  "name": "Encypher",
+  "name": "@sjsreehari/encypher",
   "version": "1.0.0",
   "description": "A lightweight React hook for encrypted localStorage/sessionStorage with a useState-like API.",
   "main": "index.js",
@@ -55,5 +55,12 @@
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.0",
     "webpack-dev-server": "^4.15.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjsreehari/encypher.git"
   }
 }

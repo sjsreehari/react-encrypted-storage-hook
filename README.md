@@ -20,9 +20,9 @@ A lightweight React hook for encrypted localStorage/sessionStorage with a useSta
 ## Installation
 
 ```bash
-# npm install Encypher
+# npm install encypher
 # or
-# yarn add Encypher
+# yarn add encypher
 ```
 
 ---
@@ -32,7 +32,7 @@ A lightweight React hook for encrypted localStorage/sessionStorage with a useSta
 ### Basic Example
 
 ```jsx
-import { useEncryptedStorage } from "Encypher";
+import { useEncryptedStorage } from "encypher";
 
 function MyComponent() {
   const [user, setUser, removeUser] = useEncryptedStorage("user", null, {
@@ -48,7 +48,7 @@ function MyComponent() {
 ### With Provider (global secret)
 
 ```jsx
-import { EncryptedStorageProvider, useEncryptedStorage } from "Encypher";
+import { EncryptedStorageProvider, useEncryptedStorage } from "encypher";
 
 function App() {
   return (
