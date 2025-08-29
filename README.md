@@ -1,4 +1,4 @@
-# secure-storage
+# Encypher
 
 A lightweight React hook for encrypted localStorage/sessionStorage with a useState-like API. Securely store sensitive data in the browser using AES-GCM (Web Crypto API), with an optional (insecure) XOR fallback for legacy environments.
 
@@ -20,9 +20,9 @@ A lightweight React hook for encrypted localStorage/sessionStorage with a useSta
 ## Installation
 
 ```bash
-# npm install secure-storage
+# npm install Encypher
 # or
-# yarn add secure-storage
+# yarn add Encypher
 ```
 
 ---
@@ -32,7 +32,7 @@ A lightweight React hook for encrypted localStorage/sessionStorage with a useSta
 ### Basic Example
 
 ```jsx
-import { useEncryptedStorage } from "secure-storage";
+import { useEncryptedStorage } from "Encypher";
 
 function MyComponent() {
   const [user, setUser, removeUser] = useEncryptedStorage("user", null, {
@@ -48,7 +48,7 @@ function MyComponent() {
 ### With Provider (global secret)
 
 ```jsx
-import { EncryptedStorageProvider, useEncryptedStorage } from "secure-storage";
+import { EncryptedStorageProvider, useEncryptedStorage } from "Encypher";
 
 function App() {
   return (
