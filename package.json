@@ -1,6 +1,6 @@
 {
   "name": "@sjsreehari/encypher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight React hook for encrypted localStorage/sessionStorage with a useState-like API.",
   "main": "index.js",
   "module": "index.js",
