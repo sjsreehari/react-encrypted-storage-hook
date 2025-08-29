@@ -1,16 +1,3 @@
-
-/**
- * useEncryptedStorage React hook
- * @template T
- * @param {string} key
- * @param {T} initialValue
- * @param {object} options
- * @param {string} options.secret
- * @param {"local"|"session"|object} [options.storage]
- * @param {number} [options.ttl]
- * @param {string} [options.fallback]
- * @returns {[T, (val: T) => Promise<void>, () => void]}
- */
 import React from "react";
 import { useState, useEffect, useCallback, useRef, useContext, createContext } from "react";
 import { encryptAES, decryptAES, encryptXOR, decryptXOR } from "./utils/crypto";

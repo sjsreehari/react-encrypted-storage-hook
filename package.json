@@ -1,5 +1,5 @@
 {
-  "name": "react-encrypted-storage-hook",
+  "name": "secure-storage",
   "version": "1.0.0",
   "description": "A lightweight React hook for encrypted localStorage/sessionStorage with a useState-like API.",
   "main": "index.js",

@@ -1,3 +1,3 @@
-import { useEncryptedStorage } from "./useEncryptedStorage";
+import { useEncryptedStorage, EncryptedStorageProvider } from "./useEncryptedStorage";
 
-export { useEncryptedStorage };
+export { useEncryptedStorage, EncryptedStorageProvider };

@@ -10,7 +10,7 @@ async function deriveKey(secret) {
   if (!secret || typeof secret !== "string" || secret.length < 8) {
     throw new Error("Secret must be a non-empty string of at least 8 characters");
   }
-  const salt = textEncoder.encode("react-encrypted-storage-hook");
+  const salt = textEncoder.encode("secure-storage");
   const keyMaterial = await window.crypto.subtle.importKey(
     "raw",
     textEncoder.encode(secret),
@@ -63,7 +63,7 @@ export async function decryptAES(secret, payload) {
 // Weak fallback XOR (warn on use)
 export function encryptXOR(secret, data) {
   if (typeof window !== "undefined" && window && window.console) {
-    window.console.warn && window.console.warn("[react-encrypted-storage-hook] XOR fallback is insecure and should not be used for sensitive data!");
+  window.console.warn && window.console.warn("[secure-storage] XOR fallback is insecure and should not be used for sensitive data!");
   }
   if (!secret || typeof secret !== "string" || secret.length < 1) {
     throw new Error("Secret required for XOR fallback");
@@ -79,7 +79,7 @@ export function encryptXOR(secret, data) {
 
 export function decryptXOR(secret, payload) {
   if (typeof window !== "undefined" && window && window.console) {
-    window.console.warn && window.console.warn("[react-encrypted-storage-hook] XOR fallback is insecure and should not be used for sensitive data!");
+  window.console.warn && window.console.warn("[secure-storage] XOR fallback is insecure and should not be used for sensitive data!");
   }
   if (!secret || typeof secret !== "string" || secret.length < 1) {
     throw new Error("Secret required for XOR fallback");

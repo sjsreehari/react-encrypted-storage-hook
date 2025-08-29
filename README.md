@@ -1,4 +1,4 @@
-# react-encrypted-storage-hook
+# secure-storage
 
 A lightweight React hook for encrypted localStorage/sessionStorage with a useState-like API. Securely store sensitive data in the browser using AES-GCM (Web Crypto API), with an optional (insecure) XOR fallback for legacy environments.
 
@@ -20,9 +20,9 @@ A lightweight React hook for encrypted localStorage/sessionStorage with a useSta
 ## Installation
 
 ```bash
-npm install react-encrypted-storage-hook
+# npm install secure-storage
 # or
-yarn add react-encrypted-storage-hook
+# yarn add secure-storage
 ```
 
 ---
@@ -32,7 +32,7 @@ yarn add react-encrypted-storage-hook
 ### Basic Example
 
 ```jsx
-import { useEncryptedStorage } from "react-encrypted-storage-hook";
+import { useEncryptedStorage } from "secure-storage";
 
 function MyComponent() {
   const [user, setUser, removeUser] = useEncryptedStorage("user", null, {
@@ -48,7 +48,7 @@ function MyComponent() {
 ### With Provider (global secret)
 
 ```jsx
-import { EncryptedStorageProvider, useEncryptedStorage } from "react-encrypted-storage-hook";
+import { EncryptedStorageProvider, useEncryptedStorage } from "secure-storage";
 
 function App() {
   return (
